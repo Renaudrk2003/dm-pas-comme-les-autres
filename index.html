@@ -100,6 +100,7 @@ p{
     font-size:22px;
     font-weight:bold;
     min-height:35px;
+    white-space:pre-line;
 }
 
 .loader{
@@ -194,10 +195,10 @@ const steps = [
     },
     {
         gif:"gif5.gif",
-        title:"Résultat final 🎉",
-        text:"Maintenant que j'ai réussi à attirer ton attention...",
+        title:"🎉 Mission terminée",
+        text:"Attention obtenue : ✅",
         loading:"",
-        success:"Salut 👋😄",
+        success:"Pour le sourire, je ne peux pas vérifier 😄\n\nEt maintenant, je te laisse décider :\n\nDu génie... ou une énorme perte de temps ? 😂",
         button:"Recommencer"
     }
 ];
@@ -231,7 +232,7 @@ function nextStep(){
             document.getElementById("status").textContent = s.success;
             document.getElementById("btn").textContent = s.button;
             document.getElementById("btn").style.display = "inline-block";
-        },3000);
+        },5000);
     }else{
         document.getElementById("status").textContent = s.success;
         document.getElementById("btn").textContent = s.button;
