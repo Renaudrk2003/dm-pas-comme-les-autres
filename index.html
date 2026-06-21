@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DM pas comme les autres</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    min-height:100vh;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#ffe6ef,#eef2ff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#222;
+    overflow:hidden;
+}
+
+.card{
+    width:90%;
+    max-width:430px;
+    background:white;
+    border-radius:28px;
+    padding:26px;
+    box-shadow:0 18px 40px rgba(0,0,0,.15);
+    position:relative;
+    overflow:hidden;
+}
+
+.home{
+    width:100vw;
+    height:100vh;
+    max-width:none;
+    border-radius:0;
+    padding:35px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#fff4f8,#eef2ff);
+}
+
+.home .stars{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+
+.star{
+    position:absolute;
+    font-size:34px;
+    animation:twinkle 1.6s infinite alternate;
+}
+
+.star:nth-child(1){top:10%;left:12%}
+.star:nth-child(2){top:18%;right:14%;animation-delay:.3s}
+.star:nth-child(3){bottom:18%;left:16%;animation-delay:.6s}
+.star:nth-child(4){bottom:12%;right:18%;animation-delay:.9s}
+.star:nth-child(5){top:48%;left:7%;animation-delay:.5s}
+.star:nth-child(6){top:45%;right:8%;animation-delay:.8s}
+
+@keyframes twinkle{
+    from{transform:scale(.8);opacity:.45}
+    to{transform:scale(1.25);opacity:1}
+}
+
+.gif{
+    width:100%;
+    max-height:240px;
+    object-fit:cover;
+    border-radius:20px;
+    margin-bottom:18px;
+    display:none;
+}
+
+h1{
+    font-size:29px;
+    margin:15px 0;
+    animation:pop .7s ease;
+}
+
+.home h1{
+    font-size:clamp(44px, 11vw, 90px);
+    line-height:1.05;
+    max-width:900px;
+}
+
+p{
+    font-size:18px;
+    line-height:1.5;
+    margin:12px 0;
+}
+
+.status{
+    margin-top:18px;
+    font-size:22px;
+    font-weight:bold;
+    min-height:35px;
+}
+
+.loader{
+    width:45px;
+    height:45px;
+    border:5px solid #ffd1dc;
+    border-top:5px solid #ff5f8c;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:20px auto;
+    display:none;
+}
+
+button{
+    margin-top:22px;
+    padding:14px 32px;
+    border:none;
+    border-radius:30px;
+    background:#ff6b8a;
+    color:white;
+    font-size:17px;
+    cursor:pointer;
+}
+
+button:hover{background:#ff4f73}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+</style>
+</head>
+
+<body>
+
+<div class="card home" id="card">
+
+    <div class="stars" id="stars">
+        <span class="star">⭐</span>
+        <span class="star">✨</span>
+        <span class="star">⭐</span>
+        <span class="star">✨</span>
+        <span class="star">⭐</span>
+        <span class="star">✨</span>
+    </div>
+
+    <img id="gif" class="gif" src="gif1.gif" alt="GIF">
+
+    <h1 id="title">Plan pour attirer ton attention</h1>
+
+    <p id="text">Oui, j'ai vraiment préparé un plan.</p>
+
+    <div class="loader" id="loader"></div>
+    <div id="status" class="status"></div>
+
+    <button id="btn" onclick="nextStep()">Commencer</button>
+</div>
+
+<script>
+let step = -1;
+
+const steps = [
+    {
+        gif:"gif1.gif",
+        title:"Étape 1",
+        text:"Trouver une idée originale.",
+        loading:"Recherche d'une idée...",
+        success:"✅ Réussi",
+        button:"Continuer"
+    },
+    {
+        gif:"gif2.gif",
+        title:"Étape 2",
+        text:"Créer une page juste pour éviter un simple « salut ».",
+        loading:"Construction du plan...",
+        success:"✅ Réussi",
+        button:"Continuer"
+    },
+    {
+        gif:"gif3.gif",
+        title:"Étape 3",
+        text:"Te faire cliquer sur le lien.",
+        loading:"Tentative en cours...",
+        success:"✅ Réussi, puisque tu es là 😄",
+        button:"Continuer"
+    },
+    {
+        gif:"gif4.gif",
+        title:"Étape 4",
+        text:"Essayer de te faire sourire.",
+        loading:"Analyse du sourire...",
+        success:"🤔 Résultat en attente...",
+        button:"Voir le résultat"
+    },
+    {
+        gif:"gif5.gif",
+        title:"Résultat final 🎉",
+        text:"Maintenant que j'ai réussi à attirer ton attention...",
+        loading:"",
+        success:"Salut 👋😄",
+        button:"Recommencer"
+    }
+];
+
+function nextStep(){
+    step++;
+
+    if(step >= steps.length){
+        step = -1;
+        resetHome();
+        return;
+    }
+
+    const s = steps[step];
+
+    document.getElementById("card").classList.remove("home");
+    document.getElementById("stars").style.display = "none";
+    document.getElementById("gif").style.display = "block";
+    document.getElementById("gif").src = s.gif;
+    document.getElementById("title").textContent = s.title;
+    document.getElementById("text").textContent = s.text;
+    document.getElementById("status").textContent = "";
+    document.getElementById("btn").style.display = "none";
+    document.getElementById("loader").style.display = s.loading ? "block" : "none";
+
+    if(s.loading){
+        document.getElementById("status").textContent = s.loading;
+
+        setTimeout(()=>{
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("status").textContent = s.success;
+            document.getElementById("btn").textContent = s.button;
+            document.getElementById("btn").style.display = "inline-block";
+        },3000);
+    }else{
+        document.getElementById("status").textContent = s.success;
+        document.getElementById("btn").textContent = s.button;
+        document.getElementById("btn").style.display = "inline-block";
+    }
+}
+
+function resetHome(){
+    document.getElementById("card").classList.add("home");
+    document.getElementById("stars").style.display = "block";
+    document.getElementById("gif").style.display = "none";
+    document.getElementById("title").textContent = "Plan pour attirer ton attention";
+    document.getElementById("text").textContent = "Oui, j'ai vraiment préparé un plan.";
+    document.getElementById("status").textContent = "";
+    document.getElementById("btn").textContent = "Commencer";
+}
+</script>
+
+</body>
+</html>
